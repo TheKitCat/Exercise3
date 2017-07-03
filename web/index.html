@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Market Basket</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet"> 
+    </head>
+    <body style="font-family: 'Quicksand', sans-serif;">
+         <div style="background-image: url('shopping.gif'); background-repeat:no-repeat; background-position: left top; background-size: 30% auto; position:relative; width:600px; height:300px; margin-left:auto; margin-right:auto;">
+            <h1 style="text-align:center;">Add product</h1>
+            
+            <form style="position:relative; left:30%; width:50%; height:150px;">
+                <label>Select a product: </label>
+                <select id="products" style="position:relative; margin:0px 0px 5px 0px; left:16%;">
+                    <option value="Pizza">Pizza</option>
+                    <option value="Beer">Beer</option>
+                    <option value="Rocket">Rocket</option>
+                    <option value="Hamster">Hamster</option>
+                    <option value="House Elf">House Elf</option>
+                    <option value="Unicorn">Unicorn</option>
+                    <option value="The one ring">The one ring</option>
+                    <option value="Lightsaber">Lightsaber</option> 
+                </select>
+                <br>
+                <label style="position:relative; clear:both; float:left; margin:0px 0px 5px 0px;">Price per unit :</label>
+                <input id="price" type="text" name="price" disabled value="10.00" style="position:relative; float:right; margin:0px 0px 5px 0px;">
+                <label style="position:relative; clear:both; float:left; margin:0px 0px 5px 0px;">Quantity : </label>
+                <input type="text" name="quantity" id="quantity" style="position:relative; float:right; margin:0px 0px 5px 0px;">
+                
+                <button type="button" style="position:relative; clear:both; float:left; left:35%; margin:10px 0px 0px 0px;" onclick="return addProduct()">Add</button>
+                <button type="reset" style="position:relative; float:left; left:35%; margin:10px 0px 0px 0px;">Reset</button>                
+            </form>
+            <hr>
+            <p id="result"></p>
+            <p style="position: relative; text-align: center; font-size: 10pt; top:30%;">&copy HS Fulda, Middleware Lecture, For Demonstration Purpose Only</p>
+
+        </div>
+        <script>    
+            
+        /**
+         * Event handler for item selection, sets the price per unit
+         *
+         */    
+        $("select").change(function(){
+                var item = $( "#products option:selected" ).text();
+                switch(item){
+                    case "Pizza":
+                        $("#price").val("10.00");
+                        break;
+                    case "Beer":
+                        $("#price").val("1.99");
+                        break;
+                    case "Rocket":
+                        $("#price").val("5.66");
+                        break;
+                    case "Hamster":
+                        $("#price").val("25.00");
+                        break; 
+                    case "House Elf":
+                        $("#price").val("100.00");
+                        break;
+                    case "Unicorn":
+                        $("#price").val("1000.99");
+                        break;
+                    case "The one ring":
+                        $("#price").val("0.01");
+                        break;
+                    case "Lightsaber":
+                        $("#price").val("200.00");
+                        break;
+                }
+            
+        });
+        
+        /**
+         * Adds new products to a market basket and 
+         * shows a list of all items in the specific market basket
+         * @returns void
+         */
+        function addProduct(){
+            var product = $( "#products option:selected" ).text();
+            var quantity = $("#quantity").val();
+            
+            $.post( "http://localhost:8081/Exercise3/MarketBasket", { product: product, quantity: quantity } )
+                            .done(function( data ){
+                            
+                            $("#result").text(data);
+                        });
+
+        }
+
+            
+        </script>
+    </body>
+</html>
